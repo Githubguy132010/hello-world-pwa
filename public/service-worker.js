@@ -25,7 +25,12 @@ self.addEventListener('fetch', event => {
 });
 
 self.addEventListener('push', event => {
-    const data = event.data.json();
+    let data;
+    try {
+        data = event.data.json();
+    } catch (error) {
+        data = { title: 'Test push', body: event.data.text() };
+    }
     const options = {
         body: data.body,
         icon: data.icon

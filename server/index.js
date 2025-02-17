@@ -9,8 +9,8 @@ const port = 3000;
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../public')));
 
-const publicVapidKey = 'YOUR_PUBLIC_VAPID_KEY';
-const privateVapidKey = 'YOUR_PRIVATE_VAPID_KEY';
+const publicVapidKey = 'BJs3EQTABqcFQxRssu8vzsUgJujyIzQ3CgnUZWOFKaNHexESVJOLMD46JNlIZLxKQP13gFyHI9MCTdbzvDCyyts';
+const privateVapidKey = 'ZYgLByAxOrdtxPxo77Xw4xNAIc77BcNMsITQMEMc9M8';
 
 webpush.setVapidDetails('mailto:example@yourdomain.org', publicVapidKey, privateVapidKey);
 
@@ -27,3 +27,5 @@ app.post('/subscribe', (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
+
+module.exports = app;
