@@ -1,2 +1,1 @@
-# hello-world-pwa
-A repository for a Hello World PWA with push notifications
+This repository is empty. Any task executed on it should be considered a new capability and needs to be created.
