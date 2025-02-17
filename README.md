@@ -12,8 +12,8 @@ This project is a simple "Hello World" Progressive Web App (PWA) with push notif
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/githubnext/workspace-blank.git
-cd workspace-blank
+git clone https://github.com/githubnext/hello-world-pwa.git
+cd hello-world-pwa
 ```
 
 2. Install dependencies:
