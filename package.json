@@ -1,0 +1,16 @@
+{
+  "name": "workspace-blank",
+  "version": "1.0.0",
+  "description": "This project is a simple \"Hello World\" Progressive Web App (PWA) with push notifications.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2",
+    "web-push": "^3.6.7"
+  }
+}
