@@ -1,41 +1,37 @@
-const CACHE_NAME = 'hello-world-pwa-cache-v1';
+const CACHE_NAME = 'hello-world-cache-v1';
 const urlsToCache = [
-    '/',
-    '/index.html',
-    '/style.css',
-    '/app.js'
+  '/',
+  '/index.html',
+  '/manifest.json'
 ];
 
-self.addEventListener('install', event => {
-    event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then(cache => {
-                return cache.addAll(urlsToCache);
-            })
-    );
+// Install event: cache app shell
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(urlsToCache))
+  );
 });
 
-self.addEventListener('fetch', event => {
-    event.respondWith(
-        caches.match(event.request)
-            .then(response => {
-                return response || fetch(event.request);
-            })
-    );
+// Activate event: clean old caches
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then(cacheNames =>
+      Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME) {
+            return caches.delete(cacheName);
+          }
+        })
+      )
+    )
+  );
 });
 
-self.addEventListener('push', event => {
-    let data;
-    try {
-        data = event.data.json();
-    } catch (error) {
-        data = { title: 'Test push', body: event.data.text() };
-    }
-    const options = {
-        body: data.body,
-        icon: data.icon
-    };
-    event.waitUntil(
-        self.registration.showNotification(data.title, options)
-    );
+// Fetch event: serve cached content when offline
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => response || fetch(event.request))
+  );
 });

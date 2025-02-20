@@ -1,24 +1,13 @@
 {
-  "name": "workspace-blank",
+  "name": "hello-world-pwa",
   "version": "1.0.0",
-  "description": "This project is a simple \"Hello World\" Progressive Web App (PWA) with push notifications.",
-  "main": "index.js",
+  "description": "Hello world PWA with push notifications",
+  "main": "server.js",
   "scripts": {
-    "start": "node server/index.js",
-    "dev": "nodemon server/index.js",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "express": "^4.21.2",
-    "web-push": "^3.6.7"
-  },
-  "devDependencies": {
-    "jest": "^29.7.0",
-    "nodemon": "^3.0.2",
-    "supertest": "^6.3.3"
+    "express": "^4.18.2",
+    "ws": "^8.13.0"
   }
 }
