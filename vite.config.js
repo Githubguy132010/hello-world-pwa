@@ -7,10 +7,8 @@ export default defineConfig({
   plugins: [
     vue(),
     VitePWA({
-      strategies: 'injectManifest',
-      srcDir: 'public',
-      filename: 'sw.js',
-      registerType: 'autoUpdate',
+      strategies: 'generateSW',
+      registerType: 'prompt',
       manifest: {
         name: 'Hello World PWA',
         short_name: 'PWA App',
@@ -23,6 +21,10 @@ export default defineConfig({
             type: 'image/svg+xml'
           }
         ]
+      },
+      workbox: {
+        cleanupOutdatedCaches: true,
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}']
       },
       devOptions: {
         enabled: true,
