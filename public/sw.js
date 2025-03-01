@@ -1,11 +1,24 @@
 self.addEventListener('push', (event) => {
   const options = event.data.json();
   event.waitUntil(
-    self.registration.showNotification(options.title, {
-      body: options.body,
-      icon: '/vite.svg',
-      badge: '/vite.svg'
-    })
+    Promise.all([
+      self.registration.showNotification(options.title, {
+        body: options.body,
+        icon: '/vite.svg',
+        badge: '/vite.svg'
+      }),
+      // Notify all clients about the notification
+      self.clients.matchAll().then(clients => {
+        clients.forEach(client => {
+          client.postMessage({
+            type: 'NOTIFICATION_RECEIVED',
+            title: options.title,
+            body: options.body,
+            timestamp: new Date().toISOString()
+          });
+        });
+      })
+    ])
   );
 });
 

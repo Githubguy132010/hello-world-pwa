@@ -83,8 +83,13 @@ async function sendTestNotification() {
 
 if (navigator.serviceWorker) {
   navigator.serviceWorker.addEventListener('message', (event) => {
-    const notification = event.data ? event.data : { title: 'New Notification', body: 'No content' };
-    notifications.value.unshift(notification);
+    if (event.data?.type === 'NOTIFICATION_RECEIVED') {
+      notifications.value.unshift({
+        title: event.data.title,
+        body: event.data.body,
+        timestamp: event.data.timestamp
+      });
+    }
   });
 }
 </script>
@@ -117,6 +122,9 @@ if (navigator.serviceWorker) {
           <div class="notification-content">
             <h3>{{ notification.title }}</h3>
             <p>{{ notification.body }}</p>
+            <p class="timestamp" v-if="notification.timestamp">
+              {{ new Date(notification.timestamp).toLocaleString() }}
+            </p>
           </div>
         </li>
       </transition-group>
@@ -254,6 +262,12 @@ ul {
 .notification-content p {
   margin: 0;
   color: #64748b;
+}
+
+.notification-content .timestamp {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  margin-top: 0.5rem;
 }
 
 /* Transitions */
