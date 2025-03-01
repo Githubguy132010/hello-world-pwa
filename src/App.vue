@@ -91,7 +91,6 @@ if (navigator.serviceWorker) {
 
 <template>
   <div class="container">
-    <h1>Hello World PWA</h1>
     <p v-if="message" class="message" :class="{ error: message.startsWith('Error') || message.startsWith('Failed') }">
       {{ message }}
     </p>
@@ -101,9 +100,7 @@ if (navigator.serviceWorker) {
     </button>
 
     <div class="notifications">
-      <h2>Notifications</h2>
       <div v-if="notifications.length === 0" class="no-notifications">
-        No notifications received yet
       </div>
       <ul v-else>
         <li v-for="(notification, index) in notifications" :key="index">
