@@ -91,72 +91,139 @@ if (navigator.serviceWorker) {
 
 <template>
   <div class="container">
-    <p v-if="message" class="message" :class="{ error: message.startsWith('Error') || message.startsWith('Failed') }">
-      {{ message }}
-    </p>
+    <div class="app-header">
+      <h1>Notification Center</h1>
+    </div>
+
+    <transition name="fade">
+      <p v-if="message" class="message" :class="{ error: message.startsWith('Error') || message.startsWith('Failed') }">
+        {{ message }}
+      </p>
+    </transition>
     
     <button @click="sendTestNotification" class="send-button">
-      Send Test Notification
+      <span class="button-content">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 2L11 13"></path>
+          <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+        </svg>
+        Send Test Notification
+      </span>
     </button>
 
     <div class="notifications">
-      <div v-if="notifications.length === 0" class="no-notifications">
-      </div>
-      <ul v-else>
-        <li v-for="(notification, index) in notifications" :key="index">
-          <h3>{{ notification.title }}</h3>
-          <p>{{ notification.body }}</p>
+      <transition-group name="list" tag="ul">
+        <li v-for="(notification, index) in notifications" :key="index" class="notification-item">
+          <div class="notification-content">
+            <h3>{{ notification.title }}</h3>
+            <p>{{ notification.body }}</p>
+          </div>
         </li>
-      </ul>
+      </transition-group>
+      <div v-if="notifications.length === 0" class="no-notifications">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+        </svg>
+        <p>No notifications yet</p>
+      </div>
     </div>
   </div>
 </template>
 
 <style>
+:root {
+  --primary-color: #6366f1;
+  --primary-hover: #4f46e5;
+  --error-color: #ef4444;
+  --success-color: #10b981;
+  --background-color: #f8fafc;
+  --text-color: #1e293b;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+}
+
 .container {
   max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+.app-header {
+  margin-bottom: 2rem;
+  text-align: center;
 }
 
 h1 {
-  text-align: center;
-  color: #2c3e50;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin-bottom: 1.5rem;
 }
 
 .message {
-  background-color: #42b983;
+  background-color: var(--success-color);
   color: white;
-  padding: 10px;
-  border-radius: 4px;
-  margin: 10px 0;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+  font-weight: 500;
+  box-shadow: var(--shadow-sm);
 }
 
 .message.error {
-  background-color: #e74c3c;
+  background-color: var(--error-color);
 }
 
 .send-button {
-  background-color: #3498db;
+  background-color: var(--primary-color);
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
   cursor: pointer;
-  margin: 10px 0;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+  width: 100%;
+  max-width: 300px;
+  margin: 1rem auto;
+  display: block;
+}
+
+.button-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .send-button:hover {
-  background-color: #2980b9;
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .notifications {
-  margin-top: 20px;
+  margin-top: 2rem;
 }
 
 .no-notifications {
-  color: #666;
-  font-style: italic;
+  text-align: center;
+  color: #94a3b8;
+  padding: 3rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
 
 ul {
@@ -164,16 +231,61 @@ ul {
   padding: 0;
 }
 
-li {
-  background-color: #f8f9fa;
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+.notification-item {
+  background-color: white;
+  padding: 1.25rem;
+  margin: 1rem 0;
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
 }
 
-h3 {
-  margin: 0 0 10px 0;
-  color: #2c3e50;
+.notification-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.notification-content h3 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+.notification-content p {
+  margin: 0;
+  color: #64748b;
+}
+
+/* Transitions */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.3s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+@media (max-width: 640px) {
+  .container {
+    margin: 1rem auto;
+    padding: 0 1rem;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
 }
 </style>
